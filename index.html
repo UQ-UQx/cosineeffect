@@ -1,0 +1,164 @@
+<html>
+<head>
+<title>Speed Interactive</title>
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.5.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.7/jquery-ui.js"></script>
+<script type='text/javascript'>//<![CDATA[
+
+  // Converts from degrees to radians.
+  Math.radians = function(degrees) {
+    return degrees * Math.PI / 180;
+  };
+
+  function measured_speed(km, degree)
+  {
+    var rad = Math.radians(degree);
+    var speed = Math.round(km * Math.cos(rad));
+    return speed;
+  }
+
+  function updateLine(x, y)
+  {
+      var ln_svg = document.getElementById("line_to_speedgun");
+      ln_svg.setAttributeNS(null,"x2",x);
+      ln_svg.setAttributeNS(null,"y2",y);
+  }
+
+  function updateAngle(x1,y1,x2,y2)
+  {
+    var hypotenuse = Math.sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2));
+    var angle = Math.atan2((y1-y2), (x1-x2)) *  (180/Math.PI);
+    $('#angletext').text('Angle: ' + Math.round(Math.abs(angle)) + " 	\u00B0");
+    return angle;
+  }
+
+  function updateSpeed(angle)
+  {
+    var car_speed = $('#speed_input').val();
+    //validate input
+    if (isNaN(car_speed))
+    {
+      //display validation error message
+      $('#validation_error').text('* Please enter a number.');
+      $('#validation_error').css('display','inline');
+      $('#speedtext').text('- -');
+    }
+    else {
+      var speed = measured_speed(car_speed, angle);
+      $('#speedtext').text(speed + ' km/h');
+      $('#validation_error').css('display','none');
+    }
+
+  }
+
+  function updateCalculation()
+  {
+    var x2 = $("#car").offset().left;
+    var x1 = $("#draggable_speed_camera").offset().left;
+    var y2 = $("#car").offset().top;
+    var y1 = $("#draggable_speed_camera").offset().top + angleline_yoffset;
+
+    angle = updateAngle(x1,y1,x2,y2);
+    updateLine(x1, y1-angleline_yoffset);
+    updateSpeed(angle);
+  }
+
+  var angleline_yoffset = 10;
+
+$(window).load(function(){
+  updateCalculation();
+  $('#draggable_speed_camera').draggable(
+      {
+          drag: function(){
+              updateCalculation();
+          },
+          axis: "y",
+          containment: '#speedinteractivecontainer',
+      });
+});//]]>
+
+</script>
+<style type="text/css">
+  #speedinteractivecontainer {
+    position:relative;
+    width: 800px;
+    height: 650px;
+    padding: 0.5em;
+    border: 3px solid #ccc;
+  }
+  #car {
+    position:absolute;
+    left: 0px;
+    top: 550px;
+  }
+  #draggable_speed_camera {
+    position:absolute;
+    left: 400px;
+    top: 540px;
+    cursor: move;
+  }
+  #angletext {
+    position:absolute;
+    left: 250px;
+    top: 600px;
+  }
+  #speed_input_div {
+    position: absolute;
+    left: 15px;
+    top: 600px;
+  }
+  #speedtext {
+    position:absolute;
+    left: 125px;
+    top: 60px;
+    width: 80px;
+    color: white;
+    letter-spacing: 2px;
+    background-color: black;
+    font-size: 1.1em; /* 40px/16=2.5em */
+    padding: 2px 2px 2px 2px;
+  }
+  #largereadingdisplay {
+    position:absolute;
+    left: 500px;
+    top: 100px;
+  }
+  #speed_camera {
+    position:absolute;
+    clip: rect(20px,300px,300px,0px);
+  }
+  #validation_error {
+    color: black;
+    background-color: #ffff00;
+    font-size: 1.1em;
+    padding: 2px 2px 2px 2px;
+    display: none;
+  }
+</style>
+</head>
+<body>
+  Drag the speed camera to change the angle at which the speed calculation is made to see the cosine effect.
+  <div id="speedinteractivecontainer">
+        <img src="images/car-clipart-free-clipart-images.png" width="100px" height="50px" id="car">
+        <div id="speed_input_div">
+          <form>
+            Car Speed: </br>
+            <input type="text" id="speed_input" size="5" value="60" /> km/h
+            <br/>
+            <div id="validation_error">This is a validation error</div>
+          </form>
+        </div>
+        <img src="images/k2-_825fdda5-7365-42a3-87a4-dd1ac68b2a0a.v1.jpg" id="draggable_speed_camera">
+        <svg height="650" width="600" id="svg_container">
+          <line x1="0" y1="570" x2="600" y2="570" style="stroke:rgb(0,0,0);stroke-width:2" id="road" />
+          <line x1="80" y1="570" x2="450" y2="550" style="stroke:rgb(0,0,255);stroke-width:2" id="line_to_speedgun" />
+            Sorry, your browser does not support inline SVG.
+        </svg>
+        <div id="angletext"></div>
+        <div id="largereadingdisplay">
+              <img src="images/439154-speed-camera.jpg" id="speed_camera">
+              <div id="speedtext">60</div>
+        </div>
+  </div>
+</body>
+</html>
