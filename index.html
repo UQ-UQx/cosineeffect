@@ -1,5 +1,6 @@
 <html>
 <head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Speed Interactive</title>
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.5.js"></script>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.7/jquery-ui.js"></script>
@@ -79,6 +80,12 @@ $(window).load(function(){
 
 </script>
 <style type="text/css">
+  .interactivecontainer:after {
+      content: "";
+      clear: both;
+      display: block;
+  }
+
   #speedinteractivecontainer {
     position:relative;
     width: 800px;
@@ -93,7 +100,7 @@ $(window).load(function(){
   }
   #draggable_speed_camera {
     position:absolute;
-    left: 400px;
+    left: 330px;
     top: 540px;
     cursor: move;
   }
@@ -123,9 +130,23 @@ $(window).load(function(){
     left: 500px;
     top: 100px;
   }
+  @media only screen and (max-width: 768px) {
+      /* For mobile phones: */
+      #largereadingdisplay {
+        position:absolute;
+        left: 25px;
+        top: 100px;
+      }
+      #speedinteractivecontainer {
+        width: 95%;
+        min-width: 450px;
+        padding: 0.5em;
+      }
+  }
   #speed_camera {
     position:absolute;
     clip: rect(20px,300px,300px,0px);
+    z-index: -1;
   }
   #validation_error {
     color: black;
@@ -138,7 +159,7 @@ $(window).load(function(){
 </head>
 <body>
   Drag the speed camera to change the angle at which the speed calculation is made to see the cosine effect.
-  <div id="speedinteractivecontainer">
+  <div id="speedinteractivecontainer" class="interactivecontainer">
         <img src="images/car-clipart-free-clipart-images.png" width="100px" height="50px" id="car">
         <div id="speed_input_div">
           <form>
@@ -150,7 +171,7 @@ $(window).load(function(){
         </div>
         <img src="images/k2-_825fdda5-7365-42a3-87a4-dd1ac68b2a0a.v1.jpg" id="draggable_speed_camera">
         <svg height="650" width="600" id="svg_container">
-          <line x1="0" y1="570" x2="600" y2="570" style="stroke:rgb(0,0,0);stroke-width:2" id="road" />
+          <line x1="0" y1="570" x2="450" y2="570" style="stroke:rgb(0,0,0);stroke-width:2" id="road" />
           <line x1="80" y1="570" x2="450" y2="550" style="stroke:rgb(0,0,255);stroke-width:2" id="line_to_speedgun" />
             Sorry, your browser does not support inline SVG.
         </svg>
@@ -160,5 +181,6 @@ $(window).load(function(){
               <div id="speedtext">60</div>
         </div>
   </div>
+  Instruction on what to do next.
 </body>
 </html>
