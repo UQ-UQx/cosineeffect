@@ -4,6 +4,7 @@
 <title>Speed Interactive</title>
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.5.js"></script>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.7/jquery-ui.js"></script>
+<script type="text/javascript" src="js/jquery.ui.touch-punch.min.js"></script>
 <script type='text/javascript'>//<![CDATA[
 
   // Converts from degrees to radians.
@@ -100,13 +101,13 @@ $(window).load(function(){
   }
   #draggable_speed_camera {
     position:absolute;
-    left: 330px;
+    left: 300px;
     top: 540px;
     cursor: move;
   }
   #angletext {
     position:absolute;
-    left: 250px;
+    left: 225px;
     top: 600px;
   }
   #speed_input_div {
@@ -134,7 +135,7 @@ $(window).load(function(){
       /* For mobile phones: */
       #largereadingdisplay {
         position:absolute;
-        left: 25px;
+        left: 10px;
         top: 100px;
       }
       #speedinteractivecontainer {
@@ -145,7 +146,7 @@ $(window).load(function(){
   }
   #speed_camera {
     position:absolute;
-    clip: rect(20px,300px,300px,0px);
+    clip: rect(30px,260px,300px,22px);
     z-index: -1;
   }
   #validation_error {
